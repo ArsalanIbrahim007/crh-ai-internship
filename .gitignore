@@ -1,0 +1,46 @@
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Secrets — never commit these
+.env
+.env.local
+*.key
+credentials.json
+token.json
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model weights and caches (gigabytes, never commit)
+hf_cache/
+*.safetensors
+*.bin
+*.gguf
+*.pt
+*.pth
+
+# Databases and generated output
+*.db
+*.sqlite
+*.sqlite3
+outputs/
+*.eml
+*.ics
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Archives
+*.zip

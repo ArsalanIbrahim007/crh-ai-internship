@@ -1,0 +1,375 @@
+{
+  "gpu": "NVIDIA GeForce RTX 3050",
+  "vram_gb": 8.6,
+  "compute_dtype": "torch.bfloat16",
+  "max_new_tokens": 128,
+  "n_prompts": 5,
+  "gpu_hourly_usd": 0.35,
+  "sampling": "greedy",
+  "tokenizers": [
+    {
+      "model": "Llama-3.2-1B",
+      "vocab": 128256,
+      "english": 40,
+      "chars/token": 5.58,
+      "code": 19,
+      "urdu": 19
+    },
+    {
+      "model": "Qwen2.5-1.5B",
+      "vocab": 151665,
+      "english": 42,
+      "chars/token": 5.31,
+      "code": 19,
+      "urdu": 19
+    },
+    {
+      "model": "Gemma-2-2B",
+      "vocab": 256000,
+      "english": 43,
+      "chars/token": 5.19,
+      "code": 23,
+      "urdu": 11
+    },
+    {
+      "model": "DeepSeek-R1-Distill-1.5B",
+      "vocab": 151665,
+      "english": 42,
+      "chars/token": 5.31,
+      "code": 19,
+      "urdu": 19
+    },
+    {
+      "model": "Phi-3.5-mini",
+      "vocab": 32011,
+      "english": 48,
+      "chars/token": 4.65,
+      "code": 23,
+      "urdu": 32
+    },
+    {
+      "model": "Mistral-7B-v0.3",
+      "vocab": 32768,
+      "english": 48,
+      "chars/token": 4.65,
+      "code": 23,
+      "urdu": 30
+    }
+  ],
+  "runs": [
+    {
+      "model": "Llama-3.2-1B",
+      "repo": "meta-llama/Llama-3.2-1B-Instruct",
+      "params_b": 1.24,
+      "precision": "4bit-nf4",
+      "gpu": "NVIDIA GeForce RTX 3050",
+      "load_seconds": 11.22,
+      "weight_gb": 1.028,
+      "peak_gb": 1.047,
+      "ttft_ms": 60.4,
+      "decode_tok_per_s": 36.5,
+      "total_tok_per_s": 36.0,
+      "context_window": 131072,
+      "vocab_size": 128256,
+      "n_layers": 16,
+      "note": "",
+      "generations": [
+        {
+          "prompt": "Explain what a KV cache is and why it speeds up text generation.",
+          "output": "A KV cache is a type of cache that stores frequently accessed data in a highly optimized manner, allowing for faster access times.\n\n## Step 1: Understanding the concept of a KV cache\nA KV (Key-Value) cache is a type of cache that stores data in a key-value format. It is designed to store frequently accessed data in a highly optimized manner, allowing for faster access times.\n\n## Step 2: Explaining the benefits of a KV cache\nA KV cache speeds up text generation by storing frequently accessed text data in a key-value format. This allows for faster access times, reducing the time it takes to generate text"
+        },
+        {
+          "prompt": "Write a Python function that reverses a linked list. Include a short comment.",
+          "output": "# Reverse a linked list\n# This function takes a linked list as input and returns the reversed linked list\n# as output. It assumes that the linked list is a singly linked list\n# and that the input linked list is not empty\ndef reverse_linked_list(head):\n    \"\"\"\n    Reverses a linked list.\n\n    This function takes a linked list as input and returns the reversed linked list as output.\n    It assumes that the linked list is a singly linked list and that the input linked list is not empty\n    \"\"\"\n    # Initialize a dummy node to simplify the code\n    dummy = Node(0)\n    current ="
+        },
+        {
+          "prompt": "A shop sells pens at 12 rupees each. If I buy 7 and pay with a 100 rupee note, how much change do I get? Show your working.",
+          "output": "## Step 1: Calculate the total cost of the pens\nTo find the total cost of the pens, we need to multiply the cost of one pen by the number of pens. The cost of one pen is 12 rupees, and I am buying 7 pens. So, the total cost is 12 * 7 = 84 rupees.\n\n## Step 2: Calculate the change I should get\nTo find the change I should get, we need to subtract the total cost of the pens from the 100 rupee note. So, the change I should get is 100 - 84 = 16"
+        },
+        {
+          "prompt": "Summarise the difference between supervised and unsupervised learning in three sentences.",
+          "output": "Supervised learning involves training a model on labeled data, where the model learns to predict the target variable based on the input features. In contrast, unsupervised learning involves training a model on unlabeled data, where the model learns to identify patterns, clusters, or relationships in the data. The key difference is that supervised learning requires labeled data, while unsupervised learning can be performed without labeled data. \n\nIn summary, supervised learning is used when there is sufficient labeled data, while unsupervised learning is used when there is limited or no labeled data. This difference affects the type of problem that can be solved, with supervised learning"
+        },
+        {
+          "prompt": "What are two risks of deploying a large language model in a customer support product?",
+          "output": "One risk is that the model may not be able to understand the nuances of human language, leading to misinterpretation of customer queries. The other risk is that the model may not be able to handle the complexity of customer queries, leading to a lack of understanding of customer needs.\n\n## Step 1: Identify the potential risks of deploying a large language model in a customer support product.\nThe potential risks of deploying a large language model in a customer support product include the model's inability to understand nuances of human language and its inability to handle customer queries' complexity.\n\n## Step 2: Analyze the first risk - the model's inability to"
+        }
+      ]
+    },
+    {
+      "model": "Qwen2.5-1.5B",
+      "repo": "Qwen/Qwen2.5-1.5B-Instruct",
+      "params_b": 1.54,
+      "precision": "4bit-nf4",
+      "gpu": "NVIDIA GeForce RTX 3050",
+      "load_seconds": 11.15,
+      "weight_gb": 1.153,
+      "peak_gb": 1.176,
+      "ttft_ms": 56.4,
+      "decode_tok_per_s": 22.8,
+      "total_tok_per_s": 22.7,
+      "context_window": 32768,
+      "vocab_size": 151936,
+      "n_layers": 28,
+      "note": "",
+      "generations": [
+        {
+          "prompt": "Explain what a KV cache is and why it speeds up text generation.",
+          "output": "A key-value cache (KV cache) is a data structure that stores key-value pairs, where each value is associated with a unique key. The main advantage of using a KV cache is that it allows for fast access to values based on their keys, which can significantly speed up operations that involve retrieving or updating values.\n\nIn the context of text generation, a KV cache can be used to store frequently accessed information about words or phrases in a dictionary or corpus. For example, if you are generating text related to sports, you might have a KV cache containing lists of common sports-related words and phrases. By pre-loading this information into the cache,"
+        },
+        {
+          "prompt": "Write a Python function that reverses a linked list. Include a short comment.",
+          "output": "```python\ndef reverse_linked_list(head):\n    \"\"\"\n    Reverses the given singly-linked list.\n    \n    :param head: The head of the linked list to be reversed.\n    :return: The new head of the reversed linked list.\n    \"\"\"\n    # Initialize pointers for the current node, previous node, and next node\n    current = head\n    prev = None\n    next_node = None\n\n    # Traverse through the linked list\n    while current is not None:\n        # Store the next node\n        next_node = current.next\n        # Reverse the current node's pointer\n        current.next = prev"
+        },
+        {
+          "prompt": "A shop sells pens at 12 rupees each. If I buy 7 and pay with a 100 rupee note, how much change do I get? Show your working.",
+          "output": "To determine the amount of change you will receive after buying 7 pens at 12 rupees each using a 100 rupee note, follow these steps:\n\n1. Calculate the total cost of 7 pens.\n   \\[\n   \\text{Total cost} = 7 \\times 12 = 84 \\text{ rupees}\n   \\]\n\n2. Subtract the total cost from the amount paid to find the change.\n   \\[\n   \\text{Change} = 100 - 84 = 16 \\text{ rupees}\n   \\]\n\nSo, the change you"
+        },
+        {
+          "prompt": "Summarise the difference between supervised and unsupervised learning in three sentences.",
+          "output": "Supervised learning is a type of machine learning where an algorithm learns from labeled data, while unsupervised learning is a type of machine learning where an algorithm learns from unlabeled data. In supervised learning, the goal is to predict a target variable based on input features, whereas in unsupervised learning, the goal is to discover patterns or structure in the data without any prior knowledge. The main difference lies in the availability of labeled data for training."
+        },
+        {
+          "prompt": "What are two risks of deploying a large language model in a customer support product?",
+          "output": "Deploying a large language model (LLM) in a customer support product can have several potential risks, including:\n\n1. **Data Privacy and Security Concerns**: One significant risk is the potential for data breaches or unauthorized access to sensitive information. LLMs often process vast amounts of text data, which could potentially be used for malicious purposes if not properly secured.\n\n2. **Ethical and Legal Issues**: There may also be ethical concerns related to how the LLM handles user data and interactions. For example, issues such as bias in training data, lack of transparency about decision-making processes, or misuse of personal information by the model could"
+        }
+      ]
+    },
+    {
+      "model": "Gemma-2-2B",
+      "repo": "google/gemma-2-2b-it",
+      "params_b": 2.61,
+      "precision": "4bit-nf4",
+      "gpu": "NVIDIA GeForce RTX 3050",
+      "load_seconds": 17.1,
+      "weight_gb": 2.228,
+      "peak_gb": 2.284,
+      "ttft_ms": 64.8,
+      "decode_tok_per_s": 19.7,
+      "total_tok_per_s": 19.7,
+      "context_window": 8192,
+      "vocab_size": 256000,
+      "n_layers": 26,
+      "note": "sliding window attention on alternate layers",
+      "generations": [
+        {
+          "prompt": "Explain what a KV cache is and why it speeds up text generation.",
+          "output": "## What is a KV Cache?\n\nA KV cache (Key-Value cache) is a data structure that stores key-value pairs.  \n\n* **Key:**  A unique identifier for a piece of data.\n* **Value:** The actual data associated with the key.\n\nThink of it like a dictionary where you look up a word (key) to find its definition (value).\n\n**How it works:**\n\n* When you access a piece of data, the KV cache checks if it already has the key.\n* If it does, the value associated with that key is directly returned. This is like finding"
+        },
+        {
+          "prompt": "Write a Python function that reverses a linked list. Include a short comment.",
+          "output": "```python\nclass Node:\n    def __init__(self, data):\n        self.data = data\n        self.next = None\n```\n\n**Function:**\n\n```python\ndef reverse_linked_list(head):\n    \"\"\"\n    Reverses a linked list.\n    \"\"\"\n    prev = None\n    curr = head\n    while curr:\n        next_node = curr.next  # Store the next node\n        curr.next = prev  # Reverse the pointer\n        prev = curr  # Move 'prev' forward\n        curr = next_node  # Move"
+        },
+        {
+          "prompt": "A shop sells pens at 12 rupees each. If I buy 7 and pay with a 100 rupee note, how much change do I get? Show your working.",
+          "output": "**Here's how to solve it:**\n\n* **Calculate the cost of the pens:** 7 pens * 12 rupees/pen = 84 rupees\n* **Calculate the change:** 100 rupees - 84 rupees = 16 rupees\n\n**Answer:** You get 16 rupees in change."
+        },
+        {
+          "prompt": "Summarise the difference between supervised and unsupervised learning in three sentences.",
+          "output": "Supervised learning uses labeled data to train models, where the algorithm learns to predict outcomes based on input features and known outputs. Unsupervised learning uses unlabeled data to discover patterns and structures within the data, without any predefined outcome. Supervised learning aims to achieve high accuracy by learning from examples, while unsupervised learning focuses on exploring and understanding data for potential insights."
+        },
+        {
+          "prompt": "What are two risks of deploying a large language model in a customer support product?",
+          "output": "Here are some potential risks:\n\n* **Bias and discrimination:** LLMs can inherit biases from the data they are trained on, leading to unfair or discriminatory responses.\n* **Misinformation and manipulation:** LLMs can generate false or misleading information, which could be used to manipulate customers or spread misinformation.\n\n**Additional risks:**\n\n* **Security vulnerabilities:** LLMs can be vulnerable to attacks that exploit their training data or their ability to generate text.\n* **Lack of transparency:** LLMs can be difficult to understand, making it difficult to determine how they arrived at their responses.\n* **Over-reliance and lack of"
+        }
+      ]
+    },
+    {
+      "model": "DeepSeek-R1-Distill-1.5B",
+      "repo": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "params_b": 1.78,
+      "precision": "4bit-nf4",
+      "gpu": "NVIDIA GeForce RTX 3050",
+      "load_seconds": 12.13,
+      "weight_gb": 1.621,
+      "peak_gb": 1.644,
+      "ttft_ms": 49.8,
+      "decode_tok_per_s": 26.3,
+      "total_tok_per_s": 26.2,
+      "context_window": 131072,
+      "vocab_size": 151936,
+      "n_layers": 28,
+      "note": "Qwen2 architecture distilled from R1, not an original DeepSeek design",
+      "generations": [
+        {
+          "prompt": "Explain what a KV cache is and why it speeds up text generation.",
+          "output": "Include the concept of a KV cache in your explanation.\nA KV cache, also known as a key-value cache, is a type of cache used in computer systems to store data in a way that allows for quick access by a specific key. The key is used to identify the data, and the value is the data itself. This allows for faster access to data that is frequently accessed, as the key is used to retrieve the data quickly.\n\nIn the context of text generation, a KV cache can speed up the process by allowing for faster access to frequently accessed words or phrases. For example, if a particular word is used frequently in a text"
+        },
+        {
+          "prompt": "Write a Python function that reverses a linked list. Include a short comment.",
+          "output": "The function should be able to handle a linked list with up to 100 nodes. The function should be able to handle a linked list with up to 100 nodes. The function should be able to handle a linked list with up to 100 nodes. The function should be able to handle a linked list with up to 100 nodes. The function should be able to handle a linked list with up to 100 nodes. The function should be able to handle a linked list with up to 100 nodes. The function should be able to handle a linked list with up to"
+        },
+        {
+          "prompt": "A shop sells pens at 12 rupees each. If I buy 7 and pay with a 100 rupee note, how much change do I get? Show your working.",
+          "output": "To solve this, I need to calculate the total cost of the pens and then subtract the amount paid to find the change. Let me proceed step by step.\nFirst, I need to find out how much 7 pens cost. Each pen is 12 rupees. So, 7 times 12 rupees.\n7 multiplied by 12 is... let me calculate. 12 times 7 is 84. So, 7 pens cost 84 rupees.\nNow, I paid with a 100 rupee note. So, the total amount I gave is 100 ru"
+        },
+        {
+          "prompt": "Summarise the difference between supervised and unsupervised learning in three sentences.",
+          "output": "Each sentence should focus on one of the two types of learning.\nThe first sentence should discuss supervised learning.\nThe second sentence should discuss unsupervised learning.\nEach sentence should be concise and clear.\nIn the first sentence, the focus should be on the presence of labeled data.\nIn the second sentence, the focus should be on the absence of labeled data.\nIn the first sentence, the focus should be on the presence of labeled data.\nIn the second sentence, the focus should be on the absence of labeled data.\nEach sentence should be concise and clear.\nIn the first sentence, the focus should be on the presence of labeled data.\nIn"
+        },
+        {
+          "prompt": "What are two risks of deploying a large language model in a customer support product?",
+          "output": "One of the risks is that the model might not be able to understand the customer's question. The other risk is that the model might not be able to generate the right response. Which of these is a more significant risk? Why?\n\nThe user is trying to assess the viability of a product that will have a large language model. They are considering whether to proceed with the product or not. They are trying to figure out the risks involved so they can make an informed decision.\n\nThe user is also trying to understand the potential impact of the language model on the product's success. They are trying to figure out whether the risks are manageable or not"
+        }
+      ]
+    },
+    {
+      "model": "Phi-3.5-mini",
+      "repo": "microsoft/Phi-3.5-mini-instruct",
+      "params_b": 3.82,
+      "precision": "4bit-nf4",
+      "gpu": "NVIDIA GeForce RTX 3050",
+      "load_seconds": 18.61,
+      "weight_gb": 2.264,
+      "peak_gb": 2.343,
+      "ttft_ms": 61.4,
+      "decode_tok_per_s": 31.1,
+      "total_tok_per_s": 30.8,
+      "context_window": 131072,
+      "vocab_size": 32064,
+      "n_layers": 32,
+      "note": "smallest Phi instruct model, no ~1B option exists",
+      "generations": [
+        {
+          "prompt": "Explain what a KV cache is and why it speeds up text generation.",
+          "output": "A KV (Key-Value) cache is a type of data storage system that stores data in a pair of keys and values. The key is a unique identifier that is used to quickly retrieve the associated value. Here's how a KV cache can speed up text generation:\n\n1. Reduced Latency: When generating text, a KV cache stores frequently accessed data in memory, which allows for faster retrieval of the data. This reduces the latency of data access, which can significantly speed up text generation.\n\n2. Reduced I/O Operations: When generating text"
+        },
+        {
+          "prompt": "Write a Python function that reverses a linked list. Include a short comment.",
+          "output": "```python\nclass ListNode:\n    def __init__(self, value=0, next=None):\n        self.value = value\n        self.__next = next\n\ndef reverse_linked_list(head):\n    \"\"\"\n    This function reverses a linked list by iterating through the list and reversing the links between nodes.\n    \"\"\"\n    prev = None\n    current = head\n    while current:\n        next_node = current.next\n        current.next = prev\n        prev = current\n        current = next_node\n    return prev"
+        },
+        {
+          "prompt": "A shop sells pens at 12 rupees each. If I buy 7 and pay with a 100 rupee note, how much change do I get? Show your working.",
+          "output": "To calculate the change, we need to follow these steps:\n\n1. Calculate the total cost of the pens.\n2. Subtract the total cost from the amount paid.\n\nStep 1: Calculate the total cost of the pens.\nThe cost of one pen is 12 rupees. If you buy 7 pens, the total cost will be:\nTotal cost = Cost per pen \u00d7 Number of pens\nTotal cost = 12 rupees/pen \u00d7 7 pens\nTotal cost = 84 rupees\n\nStep 2: Subt"
+        },
+        {
+          "prompt": "Summarise the difference between supervised and unsupervised learning in three sentences.",
+          "output": "Supervised learning is a type of machine learning where the algorithm is trained on a labeled dataset, which means that each training example is paired with an output label. The goal of supervised learning is to learn a function that maps inputs to the correct outputs, effectively predicting the output for new, unseen data based on the patterns it has learned from the training data. This approach is commonly used for tasks such as classification and regression, where the outcome is known and the algorithm aims to predict the outcome for new inputs.\n\nUnsupervised learning, on theal other hand, involves training an algorithm on a"
+        },
+        {
+          "prompt": "What are two risks of deploying a large language model in a customer support product?",
+          "output": "# Answer\nTwo risks of deploying a large language model in a customer support product are:\n\n1. **Privacy and Data Security Risks**: Large language models require vast amounts of data to function effectively, which often includes sensitive customer information. There is a risk that this data could be exposed in the event of a security breach, leading to privacy violations and potential harm to customers. Ensuring the protection of customer data is paramount, and any failure in this area can result in legal consequences and loss of customer trust.\n\n2. **Misinformation and Inaccur"
+        }
+      ]
+    },
+    {
+      "model": "Mistral-7B-v0.3",
+      "repo": "mistralai/Mistral-7B-Instruct-v0.3",
+      "params_b": 7.25,
+      "precision": "4bit-nf4",
+      "gpu": "NVIDIA GeForce RTX 3050",
+      "load_seconds": 40.73,
+      "weight_gb": 4.146,
+      "peak_gb": 4.188,
+      "ttft_ms": 93.1,
+      "decode_tok_per_s": 21.3,
+      "total_tok_per_s": 21.2,
+      "context_window": 32768,
+      "vocab_size": 32768,
+      "n_layers": 32,
+      "note": "smallest Mistral open weights, roughly 6x the Llama entry",
+      "generations": [
+        {
+          "prompt": "Explain what a KV cache is and why it speeds up text generation.",
+          "output": "A KV (Key-Value) cache is a data structure that stores data in key-value pairs, where each data item is associated with a unique key. In the context of text generation, a KV cache is used to store frequently accessed data, such as pre-generated text snippets, to speed up the text generation process.\n\nWhen generating text, especially in applications like chatbots or autocomplete features, there is often a need to access and combine multiple pieces of text. This process can be computationally expensive, especially if the text is generated on the fly. By storing these text"
+        },
+        {
+          "prompt": "Write a Python function that reverses a linked list. Include a short comment.",
+          "output": "Here's a Python function that reverses a linked list:\n\n```python\n# Definition for singly-linked list.\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef reverseList(head: ListNode) -> ListNode:\n    prev = None\n    current = head\n\n    # Iterate through the linked list and reverse the links\n    while current is not None:\n        next_node = current.next  # Save the next node"
+        },
+        {
+          "prompt": "A shop sells pens at 12 rupees each. If I buy 7 and pay with a 100 rupee note, how much change do I get? Show your working.",
+          "output": "To find the change, we first need to calculate the total cost of the pens:\n\n1. The cost of one pen is 12 rupees.\n2. I buy 7 pens, so the total cost is 12 * 7 = 84 rupees.\n\nNow, I pay with a 100 rupee note. To find the change, we subtract the total cost from the amount paid:\n\n1. The amount paid is 100 rupees.\n2. The change is 100 - 84 ="
+        },
+        {
+          "prompt": "Summarise the difference between supervised and unsupervised learning in three sentences.",
+          "output": "Supervised learning is a type of machine learning where the algorithm is trained on a labeled dataset, meaning each data point is associated with a correct output or label. The goal is to learn a function that maps inputs to outputs, so the algorithm can make accurate predictions on new, unseen data.\n\nIn contrast, unsupervised learning is a type of machine learning where the algorithm is given an unlabeled dataset and must find patterns or structure within the data on its own. The goal is often to cluster similar data points together or to find hidden relationships between variables.\n\nUnsupervised learning is useful for tasks such"
+        },
+        {
+          "prompt": "What are two risks of deploying a large language model in a customer support product?",
+          "output": "1. Misinterpretation of Customer Queries: Large language models, while powerful, can sometimes misinterpret customer queries due to their complexity or ambiguity. This can lead to inappropriate or irrelevant responses, which can frustrate customers and damage the brand's reputation.\n\n2. Lack of Personalization: While language models can handle a wide range of queries, they lack the ability to understand the unique context of each customer interaction. This can result in generic responses that fail to address the customer's specific needs or concerns, leading to a less satisfying customer experience.\n\n3. Security and Privacy Conc"
+        }
+      ]
+    }
+  ],
+  "quantization_study": [
+    {
+      "model": "Qwen2.5-1.5B",
+      "repo": "Qwen/Qwen2.5-1.5B-Instruct",
+      "params_b": 1.54,
+      "precision": "bf16",
+      "gpu": "NVIDIA GeForce RTX 3050",
+      "load_seconds": 10.83,
+      "weight_gb": 3.088,
+      "peak_gb": 3.111,
+      "ttft_ms": 47.4,
+      "decode_tok_per_s": 28.6,
+      "total_tok_per_s": 28.5,
+      "context_window": 32768,
+      "vocab_size": 151936,
+      "n_layers": 28,
+      "note": "",
+      "generations": [
+        {
+          "prompt": "Explain what a KV cache is and why it speeds up text generation.",
+          "output": "A key-value (KV) cache is a data structure that stores pairs of keys and values, where each key maps to exactly one value. In the context of natural language processing (NLP), such as text generation, a KV cache can be used to store frequently accessed information or patterns in a way that allows for quick retrieval.\n\nIn NLP applications, text generation often involves generating new sentences or paragraphs based on existing ones. To speed up this process, a KV cache can be used to store previously generated sentences or phrases. When a new sentence needs to be generated, the system can quickly look up the most similar previous sentence in the cache"
+        },
+        {
+          "prompt": "Write a Python function that reverses a linked list. Include a short comment.",
+          "output": "```python\ndef reverse_linked_list(head):\n    \"\"\"\n    Reverses the given singly linked list in place.\n    \n    Parameters:\n    head (ListNode): The head node of the linked list to be reversed.\n\n    Returns:\n    ListNode: The new head node of the reversed linked list.\n    \"\"\"\n    # Initialize pointers for the previous, current, and next nodes\n    prev = None\n    curr = head\n    \n    while curr is not None:\n        # Store the next node before changing the pointer\n        next_node = curr.next\n        \n        # Reverse the link from the current node to the previous node\n        curr.next ="
+        },
+        {
+          "prompt": "A shop sells pens at 12 rupees each. If I buy 7 and pay with a 100 rupee note, how much change do I get? Show your working.",
+          "output": "To determine the change you will receive after buying 7 pens at 12 rupees each using a 100 rupee note, follow these steps:\n\n1. **Calculate the total cost of the pens:**\n   Each pen costs 12 rupees.\n   \\[\n   \\text{Total cost} = 7 \\times 12 = 84 \\text{ rupees}\n   \\]\n\n2. **Subtract the total cost from the amount paid to find the change:**\n   You paid with a 100 rupee note.\n   \\[\n   \\text{Change} ="
+        },
+        {
+          "prompt": "Summarise the difference between supervised and unsupervised learning in three sentences.",
+          "output": "Supervised learning involves training a model on labeled data, where the output is known and used to train the model. Unsupervised learning involves training a model on unlabeled data, where the goal is to find patterns or structure within the data without any prior knowledge of what it should look like.\n\nSupervised learning requires labeled data for training, while unsupervised learning works with unlabeled data. In supervised learning, the algorithm learns from examples that are already classified, whereas in unsupervised learning, the algorithm tries to discover hidden structures in the data. The main difference lies in the type of data they work with and how they learn from"
+        },
+        {
+          "prompt": "What are two risks of deploying a large language model in a customer support product?",
+          "output": "Answer according to: Deploying a large language model (LLM) in a customer support product can be risky. The first risk is that the LLM may not perform as expected, leading to poor quality responses and potentially damaging the brand\u2019s reputation. The second risk is that the LLM could become too powerful or complex for human operators to manage effectively, resulting in inefficiencies and errors.\nDeploying a large language model (LLM) in a customer support product can be risky. The first risk is that the LLM may not perform as expected, leading to poor quality responses and potentially damaging the brand\u2019s reputation. The second risk is"
+        }
+      ]
+    },
+    {
+      "model": "Qwen2.5-1.5B",
+      "repo": "Qwen/Qwen2.5-1.5B-Instruct",
+      "params_b": 1.54,
+      "precision": "4bit-nf4",
+      "gpu": "NVIDIA GeForce RTX 3050",
+      "load_seconds": 3.88,
+      "weight_gb": 1.153,
+      "peak_gb": 1.176,
+      "ttft_ms": 53.4,
+      "decode_tok_per_s": 23.5,
+      "total_tok_per_s": 23.4,
+      "context_window": 32768,
+      "vocab_size": 151936,
+      "n_layers": 28,
+      "note": "",
+      "generations": [
+        {
+          "prompt": "Explain what a KV cache is and why it speeds up text generation.",
+          "output": "A key-value cache (KV cache) is a data structure that stores key-value pairs, where each value is associated with a unique key. The main advantage of using a KV cache is that it allows for fast access to values based on their keys, which can significantly speed up operations that involve retrieving or updating values.\n\nIn the context of text generation, a KV cache can be used to store frequently accessed information about words or phrases in a dictionary or corpus. For example, if you are generating text related to sports, you might have a KV cache containing lists of common sports-related words and phrases. By pre-loading this information into the cache,"
+        },
+        {
+          "prompt": "Write a Python function that reverses a linked list. Include a short comment.",
+          "output": "```python\ndef reverse_linked_list(head):\n    \"\"\"\n    Reverses the given singly-linked list.\n    \n    :param head: The head of the linked list to be reversed.\n    :return: The new head of the reversed linked list.\n    \"\"\"\n    # Initialize pointers for the current node, previous node, and next node\n    current = head\n    prev = None\n    next_node = None\n\n    # Traverse through the linked list\n    while current is not None:\n        # Store the next node\n        next_node = current.next\n        # Reverse the current node's pointer\n        current.next = prev"
+        },
+        {
+          "prompt": "A shop sells pens at 12 rupees each. If I buy 7 and pay with a 100 rupee note, how much change do I get? Show your working.",
+          "output": "To determine the amount of change you will receive after buying 7 pens at 12 rupees each using a 100 rupee note, follow these steps:\n\n1. Calculate the total cost of 7 pens.\n   \\[\n   \\text{Total cost} = 7 \\times 12 = 84 \\text{ rupees}\n   \\]\n\n2. Subtract the total cost from the amount paid to find the change.\n   \\[\n   \\text{Change} = 100 - 84 = 16 \\text{ rupees}\n   \\]\n\nSo, the change you"
+        },
+        {
+          "prompt": "Summarise the difference between supervised and unsupervised learning in three sentences.",
+          "output": "Supervised learning is a type of machine learning where an algorithm learns from labeled data, while unsupervised learning is a type of machine learning where an algorithm learns from unlabeled data. In supervised learning, the goal is to predict a target variable based on input features, whereas in unsupervised learning, the goal is to discover patterns or structure in the data without any prior knowledge. The main difference lies in the availability of labeled data for training."
+        },
+        {
+          "prompt": "What are two risks of deploying a large language model in a customer support product?",
+          "output": "Deploying a large language model (LLM) in a customer support product can have several potential risks, including:\n\n1. **Data Privacy and Security Concerns**: One significant risk is the potential for data breaches or unauthorized access to sensitive information. LLMs often process vast amounts of text data, which could potentially be used for malicious purposes if not properly secured.\n\n2. **Ethical and Legal Issues**: There may also be ethical concerns related to how the LLM handles user data and interactions. For example, issues such as bias in training data, lack of transparency about decision-making processes, or misuse of personal information by the model could"
+        }
+      ]
+    }
+  ]
+}
