@@ -18,7 +18,7 @@ import re
 import time
 import uuid
 
-from groq import Groq, RateLimitError, APIError
+from groq import Groq, RateLimitError, APIError, BadRequestError
 
 from .base import Provider, Response, ToolCall
 
@@ -33,8 +33,15 @@ MAX_RETRIES = 4
 # The reasoning is fine in these cases - the SQL is correct - only the transport is wrong.
 # Rather than lose the turn, the text form is parsed back into a proper tool call. Both
 # separators appear in the wild, hence [=/].
+#
+# This surfaces two different ways, and both need handling:
+#   1. The text arrives in message.content and tool_calls is empty.
+#   2. Groq's own validator rejects it and returns HTTP 400 with code "tool_use_failed",
+#      putting the same text in error.body["error"]["failed_generation"].
+# Case 2 is an error response, so without special handling it kills the run even though
+# the model produced a perfectly good tool call.
 TEXT_TOOL_CALL = re.compile(
-    r"<function[=/]\s*([A-Za-z_][A-Za-z0-9_]*)\s*(\{.*?\})\s*(?:</function>|$)",
+    r"<function[=/]\s*([A-Za-z_][A-Za-z0-9_]*)\s*>?\s*(\{.*?\})\s*(?:</function>|$)",
     re.DOTALL,
 )
 
@@ -77,7 +84,15 @@ class GroqProvider(Provider):
             kwargs["tool_choice"] = "auto"
 
         started = time.perf_counter()
-        completion = self._call_with_retry(kwargs)
+        try:
+            completion = self._call_with_retry(kwargs)
+        except BadRequestError as e:
+            recovered = self._recover_from_failed_generation(e)
+            if recovered is None:
+                raise
+            recovered.seconds = round(time.perf_counter() - started, 3)
+            self.total_calls += 1
+            return recovered
         elapsed = time.perf_counter() - started
 
         msg = completion.choices[0].message
@@ -121,6 +136,31 @@ class GroqProvider(Provider):
         return response
 
     # ------------------------------------------------------------------
+    def _recover_from_failed_generation(self, error: BadRequestError):
+        """Rescue a tool call from a 400 tool_use_failed response.
+
+        Groq validates tool calls server side. When the model writes one as text, the
+        request fails - but the raw text comes back in the error body, so the call can
+        still be salvaged rather than losing the turn.
+        """
+        body = getattr(error, "body", None)
+        if not isinstance(body, dict):
+            return None
+
+        err = body.get("error") or {}
+        if err.get("code") != "tool_use_failed":
+            return None
+
+        raw = err.get("failed_generation") or ""
+        calls = self._recover_text_tool_calls(raw)
+        if not calls:
+            return None
+
+        self.text_format_recoveries += 1
+        # Token counts are not reported on an error response.
+        return Response(text="", tool_calls=calls)
+
+    # ------------------------------------------------------------------
     @staticmethod
     def _recover_text_tool_calls(text: str) -> list[ToolCall]:
         """Pull tool calls out of the content when they were not sent structurally."""
@@ -138,7 +178,14 @@ class GroqProvider(Provider):
                 name=name, arguments=args,
                 id=f"recovered_{uuid.uuid4().hex[:12]}", raw=raw,
             ))
-        return calls
+
+        # Only the first call is returned. When the model writes calls as text it has not
+        # seen any results yet, so a second call in the same block is written against
+        # values it does not have - in testing it produced a draft_email addressed to
+        # "highest_revenue_customer_email". Running only the first forces the result back
+        # through the loop, and the model writes the second call properly on the next turn.
+        # Genuine parallel calls arriving through the structured field are unaffected.
+        return calls[:1]
 
     # ------------------------------------------------------------------
     def _call_with_retry(self, kwargs: dict):
