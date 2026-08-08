@@ -14,7 +14,9 @@ in rather than bolted on later.
 import json
 import os
 import random
+import re
 import time
+import uuid
 
 from groq import Groq, RateLimitError, APIError
 
@@ -22,6 +24,19 @@ from .base import Provider, Response, ToolCall
 
 DEFAULT_MODEL = "llama-3.3-70b-versatile"
 MAX_RETRIES = 4
+
+# Llama 3.3 does not always use the structured tool_calls field. It sometimes writes the
+# call as plain text in the content instead, like:
+#
+#   <function/run_sql {"query": "SELECT ..."} </function>
+#
+# The reasoning is fine in these cases - the SQL is correct - only the transport is wrong.
+# Rather than lose the turn, the text form is parsed back into a proper tool call. Both
+# separators appear in the wild, hence [=/].
+TEXT_TOOL_CALL = re.compile(
+    r"<function[=/]\s*([A-Za-z_][A-Za-z0-9_]*)\s*(\{.*?\})\s*(?:</function>|$)",
+    re.DOTALL,
+)
 
 
 class GroqProvider(Provider):
@@ -41,6 +56,7 @@ class GroqProvider(Provider):
         self.total_completion_tokens = 0
         self.total_calls = 0
         self.rate_limit_waits = 0
+        self.text_format_recoveries = 0
 
     # ------------------------------------------------------------------
     def chat(
@@ -91,10 +107,38 @@ class GroqProvider(Provider):
                 response.parse_failed = True
                 continue
             response.tool_calls.append(
-                ToolCall(name=tc.function.name, arguments=args, raw=raw)
+                ToolCall(name=tc.function.name, arguments=args, id=tc.id, raw=raw)
             )
 
+        # Fallback: the model wrote the call as text instead of using tool_calls.
+        if not response.tool_calls and response.text:
+            recovered = self._recover_text_tool_calls(response.text)
+            if recovered:
+                response.tool_calls = recovered
+                response.text = TEXT_TOOL_CALL.sub("", response.text).strip()
+                self.text_format_recoveries += 1
+
         return response
+
+    # ------------------------------------------------------------------
+    @staticmethod
+    def _recover_text_tool_calls(text: str) -> list[ToolCall]:
+        """Pull tool calls out of the content when they were not sent structurally."""
+        calls = []
+        for name, raw in TEXT_TOOL_CALL.findall(text):
+            try:
+                args = json.loads(raw)
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(args, dict):
+                continue
+            # No id was issued, so make one. The API only requires that the tool result
+            # references the same string.
+            calls.append(ToolCall(
+                name=name, arguments=args,
+                id=f"recovered_{uuid.uuid4().hex[:12]}", raw=raw,
+            ))
+        return calls
 
     # ------------------------------------------------------------------
     def _call_with_retry(self, kwargs: dict):
@@ -136,4 +180,5 @@ class GroqProvider(Provider):
             "completion_tokens": self.total_completion_tokens,
             "total_tokens": self.total_prompt_tokens + self.total_completion_tokens,
             "rate_limit_waits": self.rate_limit_waits,
+            "text_format_recoveries": self.text_format_recoveries,
         }

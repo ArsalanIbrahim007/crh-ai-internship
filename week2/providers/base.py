@@ -14,6 +14,7 @@ class ToolCall:
     """One tool the model asked to run."""
     name: str
     arguments: dict[str, Any]
+    id: str = ""           # the API pairs each result with the call that requested it
     raw: str = ""          # what the model actually emitted, kept for debugging
 
 
