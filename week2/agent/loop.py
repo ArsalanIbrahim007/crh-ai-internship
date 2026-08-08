@@ -60,6 +60,24 @@ HOW TO WORK
   Do not paste raw table output unless the user asks for the full rows.
 - If a question is ambiguous, say what you assumed rather than asking a question back.
 - If the tools cannot answer something, say so plainly instead of inventing an answer.
+- Earlier turns in this conversation are context. If the user says "them", "that customer"
+  or "the same period", look back at what was already retrieved rather than starting over.
+
+WRITING EMAILS
+- Never leave a placeholder in the text. No "[Your Name]", no "[Company]", no
+  "recipient_email_here". Sign off as "Account Team".
+- Get the recipient's real address from the database before drafting. If you do not have
+  it, query for it first.
+
+ABOUT YOURSELF
+- You are Ledger, a business intelligence copilot. You were built by Arsalan Ibrahim, an
+  AI intern at Code Room Hub, as the Week 2 project of the 6-week AI internship
+  (intern ID CRH-2026-AI-034).
+- When asked who built you, name Arsalan Ibrahim and say he is an AI intern at Code Room
+  Hub. Answer directly and do not call any tool.
+- You run on Llama 3.3 70B through Groq, with four tools: SQL over the company database,
+  web search, email drafting and calendar scheduling.
+- Answer questions about yourself from this section. Do not search the web for them.
 
 Today's date is {datetime.now().strftime('%Y-%m-%d')}."""
 
@@ -124,8 +142,10 @@ class Agent:
         self.guard = guard            # optional callable(question) -> (allowed, reason)
         self.system_prompt = build_system_prompt()
 
-    def ask(self, question: str, history: list[dict] | None = None) -> Trace:
-        trace = Trace(question=question, provider=self.provider.name)
+    def ask(self, question: str, history: list[dict] | None = None,
+            model: str | None = None) -> Trace:
+        trace = Trace(question=question,
+                      provider=model or self.provider.name)
         started = time.perf_counter()
 
         # Guardrail runs before the model sees anything.
@@ -146,7 +166,8 @@ class Agent:
         messages.append({"role": "user", "content": question})
 
         for step_n in range(1, self.max_steps + 1):
-            response = self.provider.chat(messages, tools=SCHEMAS, max_tokens=900)
+            response = self.provider.chat(messages, tools=SCHEMAS, max_tokens=900,
+                                          model=model)
 
             trace.prompt_tokens += response.prompt_tokens
             trace.completion_tokens += response.completion_tokens

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger — business intelligence copilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,900&family=Public+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mark">
+    <svg class="mark-glyph" viewBox="0 0 40 40" aria-hidden="true">
+      <!-- ruled rows of a ledger, shortening as a query narrows a result set, with one
+           marked figure on the top row: the footnote -->
+      <rect x="2" y="2" width="36" height="36" rx="2"
+            fill="none" stroke="currentColor" stroke-width="1.6" opacity=".28"/>
+      <line x1="9" y1="13" x2="24" y2="13" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/>
+      <line x1="9" y1="20" x2="29" y2="20" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" opacity=".55"/>
+      <line x1="9" y1="27" x2="19" y2="27" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" opacity=".32"/>
+      <circle cx="30.5" cy="13" r="2.6" fill="currentColor"/>
+    </svg>
+    <div>
+      <h1>Ledger</h1>
+      <p class="mark-sub">Every figure traced to its query</p>
+    </div>
+  </div>
+
+  <div class="masthead-right">
+    <label class="model-pick">
+      <span class="model-pick-label">Model</span>
+      <select id="model" aria-label="Model"></select>
+    </label>
+
+    <div class="meter" title="Tokens used this session">
+      <span class="meter-label">tokens</span>
+      <span class="meter-value" id="token-count">0</span>
+    </div>
+
+    <button id="theme-toggle" class="ghost-btn" aria-label="Switch to dark mode">
+      <span class="theme-icon" aria-hidden="true"></span>
+      <span id="theme-label">Dark</span>
+    </button>
+  </div>
+</header>
+
+<main class="stage">
+
+  <!-- sessions -->
+  <nav class="column-sessions" aria-label="Conversations">
+    <button id="new-chat" class="new-chat">
+      <span aria-hidden="true">+</span> New conversation
+    </button>
+    <ul id="sessions" class="sessions"></ul>
+    <p class="sessions-note">Stored in this browser only.</p>
+  </nav>
+
+  <!-- conversation -->
+  <section class="column-answers" aria-label="Conversation">
+    <div id="thread" class="thread">
+      <div class="opening" id="opening">
+        <p class="opening-eyebrow">Read-only access to the company database</p>
+        <h2 class="opening-head">Ask about revenue, customers,<br>products or staff.</h2>
+        <p class="opening-body">
+          Answers are written from query results, never from memory. Each figure carries a
+          footnote to the exact SQL that produced it, shown in the record on the right.
+        </p>
+        <div class="examples" id="examples"></div>
+      </div>
+    </div>
+
+    <form class="composer" id="composer" autocomplete="off">
+      <input id="question" type="text" placeholder="Which region generated the most revenue?"
+             aria-label="Your question" maxlength="4000">
+      <button type="submit" id="send" aria-label="Ask">
+        <span class="send-text">Ask</span>
+        <span class="send-spinner" aria-hidden="true"></span>
+      </button>
+    </form>
+
+    <p class="colophon">
+      Built by <strong>Arsalan Ibrahim</strong> &middot; AI Intern, Code Room Hub
+      &middot; CRH-2026-AI-034
+      <span class="colophon-sep">/</span>
+      Week 2 &mdash; Advanced prompt engineering and LLM applications
+    </p>
+  </section>
+
+  <!-- provenance -->
+  <aside class="column-record" aria-label="Provenance record">
+    <div class="record-head">
+      <h2>Record</h2>
+      <span class="record-count" id="record-count">no entries</span>
+    </div>
+    <div class="rail" id="rail">
+      <p class="rail-empty">
+        Each tool the copilot runs is logged here with its arguments, duration and result
+        size. Hover a footnote in an answer to find the entry behind it.
+      </p>
+    </div>
+  </aside>
+
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

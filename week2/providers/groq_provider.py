@@ -22,8 +22,49 @@ from groq import Groq, RateLimitError, APIError, BadRequestError
 
 from .base import Provider, Response, ToolCall
 
-DEFAULT_MODEL = "llama-3.3-70b-versatile"
+DEFAULT_MODEL = "openai/gpt-oss-120b"
 MAX_RETRIES = 4
+
+# Groq describes which window was exhausted in the error text. That distinction matters:
+# a per-minute limit clears in seconds and is worth waiting out, a per-day limit will not
+# clear within any retry loop, so retrying just burns requests. Retrying a daily cap four
+# times is exactly what happened in testing.
+_RL_WINDOW = re.compile(r"(tokens|requests) per (day|minute|hour)", re.I)
+_RL_RETRY = re.compile(r"try again in ([\dhms.]+)", re.I)
+_RL_LIMITS = re.compile(r"Limit (\d+), Used (\d+)", re.I)
+
+
+class RateLimited(RuntimeError):
+    """Raised when a quota is exhausted, carrying enough detail to explain it."""
+
+    def __init__(self, model: str, message: str):
+        self.model = model
+        self.raw = message
+
+        window = _RL_WINDOW.search(message)
+        self.unit = window.group(1).lower() if window else "tokens"
+        self.window = window.group(2).lower() if window else "minute"
+
+        retry = _RL_RETRY.search(message)
+        self.retry_after = retry.group(1).rstrip(".") if retry else "a moment"
+
+        limits = _RL_LIMITS.search(message)
+        self.limit = int(limits.group(1)) if limits else None
+        self.used = int(limits.group(2)) if limits else None
+
+        self.daily = self.window in ("day", "hour")
+
+        if self.daily:
+            text = (f"The daily {self.unit} quota for {model} is used up "
+                    f"({self.used:,} of {self.limit:,}). " if self.limit else
+                    f"The daily {self.unit} quota for {model} is used up. ")
+            text += f"It resets in {self.retry_after}. Switch to another model to continue."
+        else:
+            text = (f"{model} hit its per-minute {self.unit} limit. "
+                    f"Try again in {self.retry_after}.")
+
+        super().__init__(text)
+        self.friendly = text
 
 # Llama 3.3 does not always use the structured tool_calls field. It sometimes writes the
 # call as plain text in the content instead, like:
@@ -40,8 +81,14 @@ MAX_RETRIES = 4
 #      putting the same text in error.body["error"]["failed_generation"].
 # Case 2 is an error response, so without special handling it kills the run even though
 # the model produced a perfectly good tool call.
+# Four variants observed in testing, all from the same model on the same day:
+#     <function/run_sql {"query": ...} </function>
+#     <function=run_sql{"query": ...}</function>
+#     <function/run_sql>{"query": ...}</function>
+#     <function=search_web{"query": ...}> </function>
+# The optional > appears on either side of the JSON, so both are allowed for.
 TEXT_TOOL_CALL = re.compile(
-    r"<function[=/]\s*([A-Za-z_][A-Za-z0-9_]*)\s*>?\s*(\{.*?\})\s*(?:</function>|$)",
+    r"<function[=/]\s*([A-Za-z_][A-Za-z0-9_]*)\s*>?\s*(\{.*?\})\s*>?\s*(?:</function>|$)",
     re.DOTALL,
 )
 
@@ -72,9 +119,10 @@ class GroqProvider(Provider):
         tools: list[dict] | None = None,
         max_tokens: int = 512,
         temperature: float = 0.0,
+        model: str | None = None,
     ) -> Response:
         kwargs = {
-            "model": self.model,
+            "model": model or self.model,
             "messages": messages,
             "max_tokens": max_tokens,
             "temperature": temperature,
@@ -200,10 +248,16 @@ class GroqProvider(Provider):
             try:
                 return self.client.chat.completions.create(**kwargs)
             except RateLimitError as e:
+                limited = RateLimited(kwargs.get("model", self.model), str(e))
+                if limited.daily:
+                    # No number of retries will clear a daily quota. Fail immediately with
+                    # something the interface can explain.
+                    raise limited from e
+
                 last_error = e
                 self.rate_limit_waits += 1
                 wait = (2 ** attempt) + random.uniform(0, 1)
-                print(f"[groq] rate limited, waiting {wait:.1f}s "
+                print(f"[groq] per-minute limit, waiting {wait:.1f}s "
                       f"(attempt {attempt + 1}/{MAX_RETRIES})")
                 time.sleep(wait)
             except APIError as e:
