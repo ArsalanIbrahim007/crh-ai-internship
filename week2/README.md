@@ -290,3 +290,7 @@ week2/
 `outputs/` holds traces, drafts and calendar files. It is gitignored — those are generated,
 and the drafts contain addresses.
 
+
+---
+
+**Demo video:** [live walkthrough of the copilot](https://drive.google.com/file/d/1xCHSkSWTk0whZ-DfbXZLOcpsaxl6aF7Y/view?usp=sharing)
