@@ -150,12 +150,50 @@ function relativeDay(ts) {
    ever promotes already-safe text into tags, and there is no link or image handling to
    turn model output into a clickable surface. */
 function markdown(safe) {
-  return safe
+  return mdTables(safe)
     .replace(/```([\s\S]*?)```/g, (_, code) => `<pre class="md-block">${code.trim()}</pre>`)
     .replace(/`([^`\n]+)`/g, "<code class=\"md-code\">$1</code>")
     .replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>")
     .replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s.,;:)]|$)/g, "$1<em>$2</em>")
+    .replace(/^#{2,4}\s+(.+)$/gm, "<span class=\"md-h\">$1</span>")
+    // the model sometimes emits literal <br>, which escaping turned into visible text
+    .replace(/&lt;br\s*\/?&gt;/gi, "<br>")
     .replace(/^\s*[-*]\s+(.+)$/gm, "<span class=\"md-li\">$1</span>");
+}
+
+/* Pipe tables. The model reaches for these constantly on ranked results, and raw pipes
+   are the single ugliest thing in the output. Deliberately forgiving: a header row, an
+   optional divider, then rows - no alignment syntax, no nesting. */
+function mdTables(text) {
+  const lines = text.split("\n");
+  const out = [];
+  let i = 0;
+
+  const isRow = (l) => l.trim().startsWith("|") && l.includes("|", 1);
+  const isDivider = (l) => /^\s*\|[\s|:-]+\|?\s*$/.test(l) && l.includes("-");
+  const cells = (l) => l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|")
+                        .map((c) => c.trim());
+
+  while (i < lines.length) {
+    if (!isRow(lines[i])) { out.push(lines[i]); i += 1; continue; }
+
+    const block = [];
+    while (i < lines.length && isRow(lines[i])) { block.push(lines[i]); i += 1; }
+
+    if (block.length < 2) { out.push(...block); continue; }
+
+    const header = cells(block[0]);
+    const body = block.slice(isDivider(block[1]) ? 2 : 1)
+                      .filter((l) => !isDivider(l))
+                      .map(cells);
+
+    const th = header.map((h) => `<th>${h}</th>`).join("");
+    const tr = body.map((row) =>
+      `<tr>${header.map((_, n) => `<td>${row[n] ?? ""}</td>`).join("")}</tr>`).join("");
+
+    out.push(`<table class="md-table"><thead><tr>${th}</tr></thead><tbody>${tr}</tbody></table>`);
+  }
+  return out.join("\n");
 }
 
 /* Mark every retrieved figure with a footnote pointing into the record.

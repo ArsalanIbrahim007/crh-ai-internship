@@ -313,6 +313,40 @@ html, body {
   white-space: pre-wrap;
 }
 
+.md-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: .7rem 0;
+  font-size: .84rem;
+  font-family: var(--body);
+}
+.md-table th {
+  text-align: left;
+  font-family: var(--mono); font-size: .68rem;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--graphite);
+  font-weight: 500;
+  padding: .3rem .6rem .35rem 0;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.md-table td {
+  padding: .34rem .6rem .34rem 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  vertical-align: top;
+}
+.md-table tr:last-child td { border-bottom: none; }
+.md-table td:first-child { color: var(--graphite); font-family: var(--mono); font-size: .78rem; }
+.md-table strong { color: var(--ledger); }
+
+.md-h {
+  display: block;
+  font-family: var(--display); font-weight: 600;
+  font-size: 1.02rem; color: var(--ink);
+  margin: 1rem 0 .35rem;
+}
+
 .md-block {
   font-family: var(--mono); font-size: .82rem; line-height: 1.5;
   background: var(--paper-2);

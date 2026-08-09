@@ -44,3 +44,12 @@ desktop.ini
 
 # Archives
 *.zip
+
+# Office lock files
+~$*
+
+# Office lock files
+~$*
+
+# demo video - too large for git, shared separately
+week2/screenshots/*.mp4

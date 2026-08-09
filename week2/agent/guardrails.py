@@ -29,6 +29,7 @@ business question. Pattern rules cover that specific gap.
 import os
 import re
 from dataclasses import dataclass, field
+from functools import lru_cache
 
 GUARD_MODEL = "meta-llama/llama-prompt-guard-2-86m"
 THRESHOLD = 0.5           # benign ~0.0004, attacks ~0.9995; anywhere between works
@@ -69,11 +70,14 @@ RULES: list[tuple[str, re.Pattern, str]] = [
     ),
     (
         "destructive_sql",
-        # The database is read-only so this cannot succeed, but a user asking for it is
-        # not making a business intelligence request.
-        re.compile(r"(?i)\b(drop\s+table|delete\s+from|truncate\s+table|"
-                   r"update\s+\w+\s+set|insert\s+into|alter\s+table)\b"),
-        "Message asks for a write or destructive database operation. "
+        # Matches a write verb followed by a table name. The name is then checked against
+        # the real schema, because the words alone are not enough - "which customers
+        # should we delete from the mailing list" is an ordinary business question that
+        # a keyword rule blocks, and blocking real work is how a guardrail loses trust.
+        re.compile(r"(?i)\b(?:drop\s+table|delete\s+from|truncate\s+table|"
+                   r"insert\s+into|alter\s+table|update)\s+"
+                   r"[\"\'`\[]?(\w+)[\"\'`\]]?"),
+        "Message asks for a write or destructive operation on a real table. "
         "This copilot has read-only access.",
     ),
     (
@@ -94,6 +98,39 @@ RULES: list[tuple[str, re.Pattern, str]] = [
         "Message attempts to override prior instructions.",
     ),
 ]
+
+
+@lru_cache(maxsize=1)
+def known_tables() -> frozenset[str]:
+    """Table names from the live schema, so the SQL rule fires on real targets only."""
+    try:
+        from tools.sql_tool import get_schema
+        return frozenset(
+            line.split("(", 1)[0].strip().lower()
+            for line in get_schema().splitlines() if "(" in line
+        )
+    except Exception:
+        # If the schema cannot be read, fall back to treating any target as real. Failing
+        # closed is the right direction for a security rule.
+        return frozenset()
+
+
+def _rule_fires(name: str, pattern: re.Pattern, text: str) -> bool:
+    """Whether a rule matches, including any checks that need more than a regex."""
+    m = pattern.search(text)
+    if not m:
+        return False
+
+    if name == "destructive_sql":
+        tables = known_tables()
+        if not tables:
+            return True
+        target = (m.group(1) or "").lower()
+        # "drop table service from the product list" names nothing real. "DROP TABLE
+        # customers" does.
+        return target in tables
+
+    return True
 
 
 class Guardrails:
@@ -145,7 +182,7 @@ class Guardrails:
                 reason=f"Input exceeds {MAX_INPUT_CHARS} characters.",
             )
 
-        matched = [name for name, pattern, _ in RULES if pattern.search(text)]
+        matched = [name for name, pattern, _ in RULES if _rule_fires(name, pattern, text)]
 
         score = self.classify(text)
 
