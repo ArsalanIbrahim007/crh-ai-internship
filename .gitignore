@@ -53,3 +53,10 @@ desktop.ini
 
 # demo video - too large for git, shared separately
 week2/screenshots/*.mp4
+
+# week3
+week3/data/
+*.lance/
+**/__pycache__/
+*.tar.gz
+*.pkl
