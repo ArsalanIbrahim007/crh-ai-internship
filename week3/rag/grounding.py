@@ -60,13 +60,24 @@ def score_answer(parsed: dict, chunks: list[dict]) -> dict:
             flagged += 1
 
     scored = [s["grounding"] for s in sentences if s["grounding"] is not None]
-    confidence = sum(scored) / len(scored) if scored else 0.0
+    grounding_conf = sum(scored) / len(scored) if scored else 0.0
+
+    # Grounding alone asks "is this claim in the chunk?" — not "was that chunk
+    # relevant to the question?" A near-zero retrieval score means the answer
+    # is faithful to a document that should never have been retrieved, which
+    # presents as high confidence on an out-of-corpus question. Gate on both.
+    cited_scores = [c.get("rerank_score", 0.0) for i, c in enumerate(chunks, 1)
+                    if any(i in s["citations"] for s in sentences)]
+    retrieval_conf = max(cited_scores) if cited_scores else 0.0
+    confidence = grounding_conf * retrieval_conf
 
     parsed["stats"].update({
         "flagged_sentences": flagged,
         "grounding_threshold": GROUNDING_THRESHOLD,
         "confidence": round(confidence, 4),
-       "verdict": _verdict(confidence, parsed["stats"]["citation_coverage"],
+        "grounding_score": round(grounding_conf, 4),
+        "retrieval_score": round(retrieval_conf, 4),
+        "verdict": _verdict(confidence, parsed["stats"]["citation_coverage"],
                             parsed["answer"]),
     })
     return parsed
@@ -98,7 +109,9 @@ NO_SUPPORT = ("do not contain", "does not contain", "no information",
 
 def _verdict(confidence: float, coverage: float,
              answer: str = "") -> str:
-    if any(p in answer.lower() for p in NO_SUPPORT):
+    # Only an abstention if the whole answer is a refusal — a single sentence
+    # noting a gap is a finding, not a refusal.
+    if coverage == 0.0 and any(p in answer.lower() for p in NO_SUPPORT):
         return "abstained — no supporting sources"
     if coverage < 0.5:
         return "low — many claims uncited"

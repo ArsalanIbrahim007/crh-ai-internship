@@ -107,10 +107,15 @@ Stated honestly rather than omitted.
 - **Gold labels are term-presence heuristics**, not human relevance judgements.
   A production evaluation needs annotated query-document pairs. The eval
   saturates on recall as a result.
-- **Grounding scores are miscalibrated on dense numeric chunks.** A one-line
-  factual claim scored against a 2,000-character price table returns a low
-  score despite being correct, because the cross-encoder sees mostly irrelevant
-  surrounding text. Prose answers score 0.85–0.99; tabular ones under-report.
+- **Confidence combines two independent signals, and both are needed.**
+  Grounding alone (claim vs. cited chunk) reports high confidence on an
+  out-of-corpus question when the model faithfully quotes an irrelevant
+  document that retrieval scored near zero. Confidence is therefore the
+  product of grounding and the best cited retrieval score. Separately,
+  grounding under-reports on 2,000-character heterogeneous chunks — a correct
+  claim scored against a whole market bulletin is swamped by surrounding text.
+  Sentence-level evidence selection would fix the second issue and is a
+  straightforward extension of the existing compression module.
 - **Department labels are heuristic**, inferred from maildir folder names and
   subject lines, not ground truth. RBAC therefore demonstrates the mechanism
   correctly over approximate metadata.
