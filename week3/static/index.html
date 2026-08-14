@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Intelligence Platform</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="shell">
+
+  <aside class="rail">
+    <div class="brand">Intelligence<small>Enterprise Knowledge</small></div>
+
+    <div>
+      <div class="group-label">Acting as</div>
+      <select id="role"></select>
+      <div class="role-desc" id="roleDesc"></div>
+    </div>
+
+    <div>
+      <div class="group-label">Departments</div>
+      <div class="chips" id="deptChips"></div>
+    </div>
+
+    <div>
+      <div class="group-label">Format</div>
+      <div class="chips" id="fmtChips"></div>
+    </div>
+
+    <div>
+      <div class="group-label">Pipeline</div>
+      <label class="toggle"><input type="checkbox" id="tRerank" checked> Cross-encoder rerank</label>
+      <label class="toggle"><input type="checkbox" id="tCompress" checked> Context compression</label>
+      <label class="toggle"><input type="checkbox" id="tSelfquery"> Self-query filters</label>
+    </div>
+
+    <div>
+      <div class="group-label">Model</div>
+      <select id="model"></select>
+    </div>
+
+    <div>
+      <div class="group-label">Corpus</div>
+      <div class="stat-row"><span>documents</span><b id="cDocs">—</b></div>
+      <div class="stat-row"><span>chunks</span><b id="cChunks">—</b></div>
+      <div class="stat-row"><span>parents</span><b id="cParents">—</b></div>
+    </div>
+
+    <div style="margin-top:auto">
+      <button class="ghost" id="btnNew" style="width:100%">New conversation</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="tabs">
+      <div class="tab on" data-pane="ask">Ask</div>
+      <div class="tab" data-pane="search">Search</div>
+      <div class="tab" data-pane="analytics">Analytics</div>
+    </div>
+
+    <section class="pane on" id="pane-ask">
+      <div class="ask-bar">
+        <textarea id="q" placeholder="Ask the corpus. Follow-ups use conversation context."></textarea>
+        <button class="go" id="btnAsk">Ask</button>
+      </div>
+      <div id="askOut"><div class="empty">264,671 indexed chunks across 100,000 documents. Ask something.</div></div>
+    </section>
+
+    <section class="pane" id="pane-search">
+      <div class="ask-bar">
+        <textarea id="sq" placeholder="Retrieval only — no generation. Shows hybrid fusion and rank movement."></textarea>
+        <button class="go" id="btnSearch">Search</button>
+      </div>
+      <div id="searchOut"><div class="empty">Raw retrieval output with rank deltas.</div></div>
+    </section>
+
+    <section class="pane" id="pane-analytics">
+      <div id="anOut"><div class="empty">Loading…</div></div>
+    </section>
+  </main>
+
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
