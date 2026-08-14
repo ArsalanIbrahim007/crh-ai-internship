@@ -49,19 +49,20 @@ body::before {
 
 /* ---------- sidebar ---------- */
 .rail {
-  width: 250px; flex-shrink: 0;
+  width: 310px; flex-shrink: 0;
   background: var(--surface-1);
-  padding: 22px 18px;
-  display: flex; flex-direction: column; gap: 22px;
+  padding: 26px 22px;
+  display: flex; flex-direction: column; gap: 26px;
   border-right: 1px solid rgba(255,255,255,.04);
   max-height: 100vh; overflow-y: auto;
+  font-size: 13px;
 }
 
 .brand { font-family: var(--display); font-size: 19px; font-weight: 600; letter-spacing: -.3px; }
-.brand small { display: block; font-family: var(--mono); font-size: 9px;
+.brand small { display: block; font-family: var(--mono); font-size: 10px;
   color: var(--ink-faint); letter-spacing: 1.6px; text-transform: uppercase; margin-top: 3px; }
 
-.group-label { font-size: 9px; letter-spacing: 1.6px; text-transform: uppercase;
+.group-label { font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase;
   color: var(--ink-faint); margin-bottom: 8px; }
 
 select, input[type=text], input[type=number], textarea {
@@ -71,19 +72,19 @@ select, input[type=text], input[type=number], textarea {
 }
 select:focus, input:focus, textarea:focus { outline: none; border-color: var(--violet); }
 
-.role-desc { font-size: 10.5px; color: var(--ink-dim); margin-top: 7px; line-height: 1.5; }
+.role-desc { font-size: 12px; color: var(--ink-dim); margin-top: 7px; line-height: 1.5; }
 
 .toggle { display: flex; align-items: center; gap: 9px; padding: 5px 0;
-  cursor: pointer; font-size: 11.5px; color: var(--ink-dim); }
+  cursor: pointer; font-size: 13px; color: var(--ink-dim); }
 .toggle input { accent-color: var(--violet); width: 13px; height: 13px; cursor: pointer; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 5px; }
-.chip { padding: 3px 8px; border-radius: 999px; font-size: 10px;
+.chip { padding: 4px 10px; border-radius: 999px; font-size: 11.5px;
   background: var(--surface-2); color: var(--ink-dim);
   border: 1px solid transparent; cursor: pointer; user-select: none; }
 .chip.on { background: var(--violet-lo); color: var(--ink); border-color: var(--violet); }
 
-.stat-row { display: flex; justify-content: space-between; font-size: 10.5px;
+.stat-row { display: flex; justify-content: space-between; font-size: 12px;
   color: var(--ink-dim); padding: 2px 0; }
 .stat-row b { color: var(--ink); font-weight: 500; }
 

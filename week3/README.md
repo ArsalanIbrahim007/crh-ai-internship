@@ -90,8 +90,8 @@ which is exactly the case reranking exists to handle.
 **Hybrid earns its place on exact identifiers.** Dense retrieval alone scatters
 gas-hub settlement prices; adding BM25 pulls the correct price table to rank 1.
 Asked for Transco Zone 3 and NGPL Mid-Continent settlements, the system
-returned $1.4422 and $1.6769/mmBtu with a citation, read out of an unlabelled
-numeric price block.
+returned the correct per-mmBtu figures with a citation, read out of an
+unlabelled numeric price block.
 
 **RBAC changes answers, not just result counts.** The same question asked as
 Executive and as Contractor produces different source sets and different
