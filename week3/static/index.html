@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Knowledge Intelligence Platform</title>
-<link rel="stylesheet" href="/static/styles.css">
-</head>
+
+</head><link rel="stylesheet" href="/static/styles.css?v=2">
 <body>
 <div class="shell">
 
@@ -57,6 +57,7 @@
       <div class="tab on" data-pane="ask">Ask</div>
       <div class="tab" data-pane="search">Search</div>
       <div class="tab" data-pane="analytics">Analytics</div>
+      <div class="tab" data-pane="docs">Documents</div>
     </div>
 
     <section class="pane on" id="pane-ask">
@@ -78,9 +79,24 @@
     <section class="pane" id="pane-analytics">
       <div id="anOut"><div class="empty">Loading…</div></div>
     </section>
+    <section class="pane" id="pane-docs">
+      <div class="answer-card" style="padding:22px 24px;margin-bottom:20px">
+        <div class="group-label">Add to the index</div>
+        <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:10px">
+          <input type="file" id="upFile" accept=".pdf,.docx,.html,.htm,.csv"
+                 style="flex:1;min-width:220px">
+          <select id="upDept" style="width:170px"></select>
+          <button class="go" id="btnUpload">Upload</button>
+        </div>
+        <div class="role-desc" id="upStatus" style="margin-top:10px">
+          PDF, DOCX, HTML or CSV up to 25 MB. Chunked, embedded and searchable immediately.
+        </div>
+      </div>
+      <div id="docsOut"><div class="empty">Loading…</div></div>
+    </section>
   </main>
 
 </div>
-<script src="/static/app.js"></script>
+<script src="/static/app.js?v=2"></script>
 </body>
 </html>

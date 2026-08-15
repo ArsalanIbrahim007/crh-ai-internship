@@ -60,3 +60,6 @@ week3/data/
 **/__pycache__/
 *.tar.gz
 *.pkl
+
+week3/Output/
+week3/output/

@@ -5,7 +5,7 @@ second load. RBAC scope is derived server-side from the role header and is
 never accepted from the client body.
 """
 from __future__ import annotations
-
+from fastapi import File, UploadFile
 import sys
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -196,6 +196,99 @@ def document(doc_id: str):
         "chunks": [{"ordinal": r.get("ordinal"), "text": r["text"],
                     "page": r.get("page")} for r in rows],
     }
+UPLOADS = ROOT / "data" / "raw" / "uploads"
+UPLOADS.mkdir(parents=True, exist_ok=True)
+
+MAX_UPLOAD = 25 * 1024 * 1024
+ALLOWED = {".pdf", ".docx", ".html", ".htm", ".csv"}
+
+
+@app.post("/api/upload")
+async def upload(file: UploadFile = File(...),
+                 department: str | None = None,
+                 x_role: str | None = Header(default=None)):
+    from ingest.incremental import ingest_file
+
+    suffix = Path(file.filename or "").suffix.lower()
+    if suffix not in ALLOWED:
+        raise HTTPException(400, f"unsupported format {suffix}; "
+                                 f"allowed: {', '.join(sorted(ALLOWED))}")
+
+    body = await file.read()
+    if len(body) > MAX_UPLOAD:
+        raise HTTPException(413, "file exceeds 25 MB")
+
+    safe = "".join(c for c in Path(file.filename).stem
+                   if c.isalnum() or c in "-_")[:80] or "upload"
+    dest = UPLOADS / f"{safe}{suffix}"
+    n = 1
+    while dest.exists():
+        dest = UPLOADS / f"{safe}_{n}{suffix}"
+        n += 1
+    dest.write_bytes(body)
+
+    try:
+        return ingest_file(dest, department=department)
+    except Exception as exc:
+        dest.unlink(missing_ok=True)
+        raise HTTPException(422, f"ingest failed: {exc}")
+
+
+@app.get("/api/documents")
+def documents(limit: int = 200, x_role: str | None = Header(default=None)):
+    """Document library, scoped to the caller's role."""
+    scope = roles.scope_for(role_of(x_role))
+    allowed_depts = set(scope.departments) if scope.departments else None
+
+    with manifest.connect() as conn:
+        rows = conn.execute(
+            "SELECT doc_id, title, fmt, department, created_at, n_chunks, "
+            "n_chars, source FROM documents WHERE status='indexed' "
+            "ORDER BY rowid DESC LIMIT ?", (limit,)
+        ).fetchall()
+
+    docs = [dict(r) for r in rows]
+    if allowed_depts is not None:
+        docs = [d for d in docs if d["department"] in allowed_depts]
+    return {"documents": docs, "count": len(docs)}
+
+
+@app.get("/api/uploads")
+def uploaded_documents():
+    """Only documents that arrived via upload — the demo view."""
+    with manifest.connect() as conn:
+        rows = conn.execute(
+            "SELECT doc_id, title, fmt, department, n_chunks, n_chars, source "
+            "FROM documents WHERE status='indexed' AND source LIKE '%uploads%' "
+            "ORDER BY rowid DESC LIMIT 100"
+        ).fetchall()
+    return {"documents": [dict(r) for r in rows]}
+
+
+@app.delete("/api/uploads/{doc_id}")
+def delete_upload(doc_id: str):
+    from retrieval.store import chunks_table, parents_table
+
+    safe = "".join(c for c in doc_id if c.isalnum())[:40]
+
+    with manifest.connect() as conn:
+        row = conn.execute(
+            "SELECT source FROM documents WHERE doc_id = ? AND source LIKE '%uploads%'",
+            (safe,)
+        ).fetchone()
+    if not row:
+        raise HTTPException(404, "no such uploaded document")
+
+    chunks_table().delete(f"doc_id = '{safe}'")
+    parents_table().delete(f"doc_id = '{safe}'")
+    with manifest.connect() as conn:
+        conn.execute("DELETE FROM documents WHERE doc_id = ?", (safe,))
+
+    p = Path(row["source"])
+    if p.exists() and UPLOADS in p.parents:
+        p.unlink()
+
+    return {"deleted": doc_id, "remaining_rows": chunks_table().count_rows()}
 
 
 if STATIC.exists():

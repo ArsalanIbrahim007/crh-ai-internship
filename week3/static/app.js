@@ -64,6 +64,15 @@ document.addEventListener('click', e => {
     set.has(chip.dataset.v) ? set.delete(chip.dataset.v) : set.add(chip.dataset.v);
     chip.classList.toggle('on');
   }
+  const del = e.target.closest('.del-doc');
+  if (del) {
+    if (!confirm('Delete this document from the index?')) return;
+    del.textContent = '…';
+    fetch('/api/uploads/' + del.dataset.id, { method: 'DELETE' })
+      .then(r => r.json())
+      .then(() => loadDocs())
+      .catch(() => { del.textContent = 'Delete'; });
+  }
   const tab = e.target.closest('.tab');
   if (tab) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
@@ -71,6 +80,7 @@ document.addEventListener('click', e => {
     tab.classList.add('on');
     $('#pane-' + tab.dataset.pane).classList.add('on');
     if (tab.dataset.pane === 'analytics') loadAnalytics();
+    if (tab.dataset.pane === 'docs') loadDocs();
   }
   const cm = e.target.closest('.cm');
   if (cm) {
@@ -265,5 +275,52 @@ async function loadAnalytics() {
         <td>${esc((r.model||'').split('/').pop())}</td></tr>`).join('')}
     </tbody></table>`;
 }
+// ---------- documents ----------
+async function loadDocs() {
+  if (!$('#upDept').options.length) {
+    $('#upDept').innerHTML = '<option value="">Auto-detect</option>' +
+      DEPTS.map(d => `<option>${d}</option>`).join('');
+  }
+  const d = await fetch('/api/uploads').then(x => x.json());
+  $('#docsOut').innerHTML = d.documents.length ? `
+    <div class="group-label">Uploaded documents</div>
+    <table><thead><tr><th>Title</th><th>Format</th><th>Department</th>
+      <th>Chunks</th><th></th></tr></thead><tbody>
+      ${d.documents.map(x => `<tr>
+        <td>${esc((x.title||'').slice(0,50))}</td><td>${esc(x.fmt)}</td>
+        <td>${esc(x.department)}</td><td>${x.n_chunks}</td>
+        <td><button class="ghost del-doc" data-id="${esc(x.doc_id)}">Delete</button></td>
+      </tr>`).join('')}
+    </tbody></table>`
+    : '<div class="empty">Nothing uploaded yet.</div>';
+}
+
+$('#btnUpload').addEventListener('click', async () => {
+  const f = $('#upFile').files[0];
+  if (!f) { $('#upStatus').textContent = 'Choose a file first.'; return; }
+
+  const fd = new FormData();
+  fd.append('file', f);
+  const dept = $('#upDept').value;
+  const url = '/api/upload' + (dept ? `?department=${encodeURIComponent(dept)}` : '');
+
+  $('#btnUpload').disabled = true;
+  $('#upStatus').innerHTML = '<span class="spinner"></span> parsing, chunking, embedding…';
+  try {
+    const res = await fetch(url, { method:'POST',
+      headers:{ 'X-Role': $('#role').value }, body: fd });
+    const j = await res.json();
+    if (!res.ok) throw new Error(j.detail || res.statusText);
+    $('#upStatus').innerHTML =
+      `Indexed <b>${esc(j.title)}</b> — ${j.chunks} chunks, ${j.parents} parent windows, ` +
+      `department ${esc(j.department)}, classified ${esc(j.classification)}. Searchable now.`;
+    $('#upFile').value = '';
+    loadDocs();
+  } catch (err) {
+    $('#upStatus').textContent = 'Failed: ' + String(err);
+  } finally {
+    $('#btnUpload').disabled = false;
+  }
+});
 
 boot();
