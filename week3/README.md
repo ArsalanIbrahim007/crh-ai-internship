@@ -1,6 +1,7 @@
 # Enterprise Knowledge Intelligence Platform
 
 **Week 3 — Production-Grade Retrieval-Augmented Generation**
+**Demo video:** https://drive.google.com/file/d/1wCyuH4ht7FelbEQmFqtzyYD1iD6vifhC/view
 Arsalan Ibrahim · Code Room Hub AI Internship · CRH-2026-AI-034
 
 A hybrid-retrieval RAG platform over 100,000 documents with cross-encoder
