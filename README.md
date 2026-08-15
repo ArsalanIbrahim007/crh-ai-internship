@@ -7,8 +7,8 @@ Weekly tasks and capstone work. All experiments run locally on an RTX 3050 (8 GB
 
 ## Contents
 
-| Topic | Status |
-|---|---|
+| Week | Topic | Status |
+|---|---|---|
 | Week 1 | Modern LLMs and transformer architecture | Complete |
 | Week 2 | Advanced prompt engineering and LLM applications | Complete |
 | Week 3 | Production-grade Retrieval-Augmented Generation | Complete |
