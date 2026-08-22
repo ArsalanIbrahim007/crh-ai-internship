@@ -1,0 +1,28 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "total_examples": 2700,
+  "minimum": 27,
+  "mean": 150.55,
+  "median": 125.5,
+  "p90": 250.1,
+  "p95": 295.0,
+  "p99": 414.03,
+  "maximum": 484,
+  "thresholds": {
+    "128": {
+      "threshold": 128,
+      "truncated_examples": 1278,
+      "truncated_percentage": 47.33
+    },
+    "256": {
+      "threshold": 256,
+      "truncated_examples": 244,
+      "truncated_percentage": 9.04
+    },
+    "512": {
+      "threshold": 512,
+      "truncated_examples": 0,
+      "truncated_percentage": 0.0
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "run_name": "mistral7b-qlora-r8-lr2e4",
+  "base_model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "train_examples_real": 2160,
+  "train_examples_synthetic": 150,
+  "train_examples_total": 2310,
+  "validation_examples": 270,
+  "max_sequence_length": 512,
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "lora_targets": [
+    "q_proj",
+    "v_proj"
+  ],
+  "learning_rate": 0.0002,
+  "epochs": 1,
+  "batch_size": 1,
+  "gradient_accumulation_steps": 8,
+  "effective_batch_size": 8,
+  "train_runtime_seconds": 4917.57,
+  "train_runtime_minutes": 81.96,
+  "peak_allocated_vram_gb": 5.114,
+  "train_metrics": {
+    "train_runtime": 4917.4365,
+    "train_samples_per_second": 0.47,
+    "train_steps_per_second": 0.059,
+    "total_flos": 1.4316659679043584e+16,
+    "train_loss": 1.1014884037954997
+  },
+  "eval_metrics": {
+    "eval_loss": 0.9893378615379333,
+    "eval_runtime": 203.0969,
+    "eval_samples_per_second": 1.329,
+    "eval_steps_per_second": 1.329
+  },
+  "final_adapter": "D:\\crh-ai-internship\\week4\\outputs\\mistral7b-customer-support-r8\\final_adapter"
+}

@@ -1,0 +1,32 @@
+{
+  "generator": "deterministic_template_v1",
+  "seed": 42,
+  "total_examples": 150,
+  "scenario_count": 10,
+  "scenario_distribution": {
+    "ambiguous_request": 15,
+    "angry_customer": 14,
+    "human_escalation": 16,
+    "invented_action_prevention": 14,
+    "missing_order_details": 15,
+    "payment_unknown": 16,
+    "refund_without_policy": 13,
+    "shipping_address_after_order": 15,
+    "unknown_delivery_date": 17,
+    "unsafe_account_access": 15
+  },
+  "intent_distribution": {
+    "cancel_order": 14,
+    "change_shipping_address": 15,
+    "check_refund_policy": 13,
+    "complaint": 14,
+    "contact_human_agent": 16,
+    "delivery_period": 17,
+    "edit_account": 15,
+    "payment_issue": 16,
+    "recover_password": 15,
+    "track_order": 15
+  },
+  "source_label": "synthetic_template_v1",
+  "real_customer_data": false
+}
