@@ -63,3 +63,9 @@ week3/data/
 
 week3/Output/
 week3/output/
+
+week4/wandb/
+week4/.pytest_cache/
+week4/__pycache__/
+week4/app/__pycache__/
+week4/tests/__pycache__/

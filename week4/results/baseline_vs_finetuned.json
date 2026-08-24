@@ -1,0 +1,76 @@
+{
+  "test_examples": 270,
+  "quality": {
+    "semantic_similarity": {
+      "label": "Semantic similarity",
+      "baseline": 0.730656,
+      "finetuned": 0.8167392015457153,
+      "absolute_change": 0.08608320154571536,
+      "percentage_change": 11.78163206019185,
+      "better_model": "finetuned"
+    },
+    "token_f1": {
+      "label": "Token F1",
+      "baseline": 0.397013,
+      "finetuned": 0.44143491274187163,
+      "absolute_change": 0.04442191274187163,
+      "percentage_change": 11.189032284049043,
+      "better_model": "finetuned"
+    },
+    "rouge_l_f1": {
+      "label": "ROUGE-L F1",
+      "baseline": 0.242416,
+      "finetuned": 0.34685444629323003,
+      "absolute_change": 0.10443844629323004,
+      "percentage_change": 43.08232389496982,
+      "better_model": "finetuned"
+    }
+  },
+  "generation": {
+    "mean_latency_seconds": {
+      "label": "Mean latency",
+      "baseline": 5.4393,
+      "finetuned": 4.809198914074076,
+      "absolute_change": -0.630101085925924,
+      "speed_change_percent": 11.584231168090083,
+      "better_model": "finetuned"
+    },
+    "median_latency_seconds": {
+      "label": "Median latency",
+      "baseline": 5.6989,
+      "finetuned": 4.701433500000007,
+      "absolute_change": -0.9974664999999927,
+      "speed_change_percent": 17.50279001210747,
+      "better_model": "finetuned"
+    },
+    "p95_latency_seconds": {
+      "label": "P95 latency",
+      "baseline": 6.0661,
+      "finetuned": 6.631379499999979,
+      "absolute_change": 0.5652794999999795,
+      "speed_change_percent": -9.318664380738523,
+      "better_model": "baseline"
+    },
+    "mean_generated_tokens": {
+      "label": "Mean generated tokens",
+      "baseline": 120.27,
+      "finetuned": 94.72222222222223,
+      "absolute_change": -25.547777777777767,
+      "percentage_change": -21.242020269209085
+    },
+    "empty_responses": {
+      "label": "Empty responses",
+      "baseline": 0,
+      "finetuned": 0,
+      "absolute_change": 0
+    }
+  },
+  "summary": {
+    "quality_metrics_improved": 3,
+    "quality_metrics_worse": 0,
+    "quality_metrics_tied": 0,
+    "quality_metrics_total": 3,
+    "statement": "The fine-tuned model improved on all measured quality metrics.",
+    "important_note": "Semantic similarity, Token F1, and ROUGE-L are automatic reference-based metrics and should not be described as classification accuracy."
+  }
+}

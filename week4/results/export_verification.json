@@ -1,0 +1,40 @@
+{
+  "main_adapter": {
+    "path": "D:\\crh-ai-internship\\week4\\outputs\\mistral7b-customer-support-r8\\final_adapter",
+    "exists": true,
+    "files": {
+      "adapter_config.json": {
+        "exists": true,
+        "size_bytes": 822
+      },
+      "adapter_model.safetensors": {
+        "exists": true,
+        "size_bytes": 13648432
+      },
+      "tokenizer_config.json": {
+        "exists": true,
+        "size_bytes": 142916
+      }
+    },
+    "valid": true
+  },
+  "hyperparameter_adapter": {
+    "path": "D:\\crh-ai-internship\\week4\\outputs\\mistral7b-customer-support-r16\\final_adapter",
+    "exists": true,
+    "files": {
+      "adapter_config.json": {
+        "exists": true,
+        "size_bytes": 823
+      },
+      "adapter_model.safetensors": {
+        "exists": true,
+        "size_bytes": 27280152
+      },
+      "tokenizer_config.json": {
+        "exists": true,
+        "size_bytes": 142916
+      }
+    },
+    "valid": true
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "status": "complete",
+  "experiment": "LoRA rank comparison",
+  "base_model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "controlled_variable": {
+    "name": "lora_r",
+    "main_value": 8,
+    "experiment_value": 16
+  },
+  "fixed_hyperparameters": {
+    "learning_rate": 0.0002,
+    "lora_alpha": 16,
+    "lora_dropout": 0.05,
+    "lora_targets": [
+      "q_proj",
+      "v_proj"
+    ],
+    "max_sequence_length": 512,
+    "epochs": 1,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "seed": 42
+  },
+  "train_examples_real": 2160,
+  "train_examples_synthetic": 150,
+  "train_examples_total": 2310,
+  "validation_examples": 270,
+  "experiment_trainable_parameters": 6815744,
+  "experiment_total_parameters": 3765178368,
+  "train_runtime_seconds": 3952.35,
+  "train_runtime_minutes": 65.87,
+  "peak_allocated_vram_gb": 5.146,
+  "main_rank_8": {
+    "train_loss": 1.1014884037954997,
+    "eval_loss": 0.9893378615379333
+  },
+  "experiment_rank_16": {
+    "train_loss": 1.100090465743649,
+    "eval_loss": 0.9797618985176086
+  },
+  "validation_winner": "rank_16",
+  "selection_rule": "Lower validation loss wins. The held-out test set is not used for hyperparameter selection.",
+  "train_metrics": {
+    "train_runtime": 3952.2004,
+    "train_samples_per_second": 0.584,
+    "train_steps_per_second": 0.073,
+    "total_flos": 1.4323514797596672e+16,
+    "train_loss": 1.100090465743649
+  },
+  "eval_metrics": {
+    "eval_loss": 0.9797618985176086,
+    "eval_runtime": 202.8103,
+    "eval_samples_per_second": 1.331,
+    "eval_steps_per_second": 1.331
+  },
+  "final_adapter": "D:\\crh-ai-internship\\week4\\outputs\\mistral7b-customer-support-r16\\final_adapter",
+  "resume_checkpoint_used": null
+}

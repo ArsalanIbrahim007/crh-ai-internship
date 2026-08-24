@@ -1,0 +1,18 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "adapter": "D:\\crh-ai-internship\\week4\\outputs\\mistral7b-customer-support-r8\\final_adapter",
+  "test_examples": 270,
+  "semantic_similarity": 0.8167392015457153,
+  "token_f1": 0.44143491274187163,
+  "rouge_l_f1": 0.34685444629323003,
+  "mean_generated_tokens": 94.72222222222223,
+  "mean_latency_seconds": 4.809198914074076,
+  "median_latency_seconds": 4.701433500000007,
+  "p95_latency_seconds": 6.631379499999979,
+  "empty_responses": 0,
+  "generation_settings": {
+    "max_new_tokens": 128,
+    "do_sample": false,
+    "num_beams": 1
+  }
+}
