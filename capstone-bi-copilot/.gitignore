@@ -1,0 +1,75 @@
+# Agent and local automation metadata
+.agents/
+.codex/
+.tmp/
+skills-lock.json
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
+service-account*.json
+firebase*.json
+google-credentials*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+pytest-cache-files-*/
+
+# Backend runtime data
+*.db
+*.sqlite
+*.sqlite3
+*.log
+backend/data/uploads/
+backend/data/vector_store/
+backend/test_runtime/
+backend/*-dev.log
+backend/*-dev.err.log
+
+# Node and frontend builds
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+frontend/*-dev.log
+frontend/*-dev.err.log
+frontend/ui-*.png
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
