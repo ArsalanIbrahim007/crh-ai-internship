@@ -1,0 +1,558 @@
+/* ================================================================
+   Autonomous Business Operations Platform — Design System
+   ================================================================ */
+
+:root {
+    /* Color palette — dark mode with deep blue-violet accents */
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a1f35;
+    --bg-card-hover: #1f2642;
+    --bg-input: #0d1220;
+
+    --text-primary: #e8ecf4;
+    --text-secondary: #8b95b0;
+    --text-muted: #5a6480;
+
+    --accent-primary: #6366f1;      /* indigo */
+    --accent-secondary: #818cf8;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+
+    --border: rgba(99, 102, 241, 0.12);
+    --border-active: rgba(99, 102, 241, 0.35);
+
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-xs: 6px;
+
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.08);
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Cascadia Code', monospace;
+
+    --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset & base ──────────────────────────────────────────────── */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* ── Header ────────────────────────────────────────────────────── */
+
+#app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    font-size: 24px;
+    filter: drop-shadow(0 0 8px var(--accent-primary));
+}
+
+.logo h1 {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-secondary), #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.version-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: var(--accent-glow);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--accent-secondary);
+    font-weight: 500;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.status-dot.idle { background: var(--text-muted); animation: none; }
+.status-dot.running { background: var(--accent-primary); }
+.status-dot.success { background: var(--success); animation: none; }
+.status-dot.error { background: var(--danger); animation: none; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
+    50% { opacity: 0.7; box-shadow: 0 0 0 4px currentColor; }
+}
+
+/* ── Main layout ───────────────────────────────────────────────── */
+
+#app-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px 28px;
+    max-width: 1600px;
+    margin: 0 auto;
+    min-height: calc(100vh - 65px);
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── Cards ─────────────────────────────────────────────────────── */
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+    border-color: var(--border-active);
+    box-shadow: var(--shadow), var(--shadow-glow);
+}
+
+.card h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+}
+
+/* ── Initiative Input ──────────────────────────────────────────── */
+
+#initiative-input {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    resize: vertical;
+    transition: border-color var(--transition);
+    line-height: 1.5;
+}
+
+#initiative-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+#initiative-input::placeholder {
+    color: var(--text-muted);
+}
+
+.input-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+/* ── Buttons ───────────────────────────────────────────────────── */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-primary), #4f46e5);
+    color: white;
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.btn-icon {
+    font-size: 11px;
+}
+
+/* ── Workflow Graph ────────────────────────────────────────────── */
+
+.workflow-graph {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 12px 0;
+}
+
+.wf-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 12px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    min-width: 70px;
+    transition: all var(--transition);
+    cursor: default;
+}
+
+.wf-node.active {
+    border-color: var(--accent-primary);
+    background: var(--accent-glow);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+    animation: nodeGlow 1.5s ease-in-out infinite;
+}
+
+.wf-node.complete {
+    border-color: var(--success);
+    background: rgba(34, 197, 94, 0.08);
+}
+
+.wf-node.failed {
+    border-color: var(--danger);
+    background: rgba(239, 68, 68, 0.08);
+}
+
+@keyframes nodeGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.15); }
+    50% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.25); }
+}
+
+.node-icon {
+    font-size: 20px;
+}
+
+.node-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.node-status {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.wf-connector {
+    color: var(--text-muted);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.reflection-badge {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-xs);
+    font-size: 12px;
+    color: var(--warning);
+    text-align: center;
+}
+
+/* ── Kanban Board ──────────────────────────────────────────────── */
+
+.kanban-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.kanban-column h3 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+.kanban-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 40px;
+}
+
+.kanban-item {
+    padding: 8px 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    font-size: 12px;
+    color: var(--text-secondary);
+    transition: all var(--transition);
+}
+
+.kanban-item:hover {
+    border-color: var(--border-active);
+    color: var(--text-primary);
+}
+
+.kanban-item .assignee {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 6px;
+    background: var(--accent-glow);
+    border-radius: 10px;
+    color: var(--accent-secondary);
+    margin-top: 4px;
+}
+
+/* ── Agent Stream ──────────────────────────────────────────────── */
+
+.stream-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.stream-log {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 4px;
+}
+
+.stream-log::-webkit-scrollbar {
+    width: 4px;
+}
+
+.stream-log::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.stream-log::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+.stream-placeholder {
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 30px;
+}
+
+.stream-entry {
+    padding: 10px 14px;
+    background: var(--bg-input);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+    font-size: 13px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.stream-entry .agent-name {
+    font-weight: 600;
+    color: var(--accent-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.stream-entry .agent-content {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.stream-entry .meta {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.stream-entry.ceo { border-left-color: #f59e0b; }
+.stream-entry.pm { border-left-color: #3b82f6; }
+.stream-entry.researcher { border-left-color: #8b5cf6; }
+.stream-entry.swe { border-left-color: #22c55e; }
+.stream-entry.qa { border-left-color: #ef4444; }
+.stream-entry.tech_writer { border-left-color: #06b6d4; }
+
+/* ── Workspace Explorer ────────────────────────────────────────── */
+
+.workspace-files {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xs);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.file-item:hover {
+    border-color: var(--accent-primary);
+    background: var(--bg-card-hover);
+}
+
+.file-item .file-name {
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    font-size: 12px;
+}
+
+.file-item .file-size {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.file-preview {
+    margin-top: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-secondary);
+}
+
+.file-preview pre {
+    padding: 14px;
+    background: var(--bg-input);
+    overflow-x: auto;
+    max-height: 250px;
+}
+
+.file-preview code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+    #app-main {
+        grid-template-columns: 1fr;
+    }
+}

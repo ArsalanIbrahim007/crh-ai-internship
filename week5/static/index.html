@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Business Operations Platform</title>
+    <meta name="description" content="Multi-agent AI system for autonomous business operations — CEO, PM, Research, SWE, QA, and Tech Writer agents collaborating on complex workflows.">
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header id="app-header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <h1>AutonomOps</h1>
+            </div>
+            <span class="version-badge">v1.0</span>
+        </div>
+        <div class="header-right">
+            <div class="status-indicator" id="system-status">
+                <span class="status-dot idle"></span>
+                <span class="status-text">Idle</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-main">
+        <!-- Left Panel: Initiative Input + Workflow Graph -->
+        <section class="panel panel-left">
+            <!-- Initiative Input -->
+            <div class="card initiative-card" id="initiative-card">
+                <h2>🎯 New Initiative</h2>
+                <textarea
+                    id="initiative-input"
+                    placeholder="Describe your business initiative...&#10;&#10;Example: Build an asynchronous rate limiter with sliding window counter algorithm in Python, with unit tests and comprehensive documentation."
+                    rows="5"
+                ></textarea>
+                <div class="input-actions">
+                    <button id="run-btn" class="btn btn-primary" onclick="startWorkflow()">
+                        <span class="btn-icon">▶</span> Launch Agents
+                    </button>
+                    <button id="clear-btn" class="btn btn-ghost" onclick="clearAll()">Clear</button>
+                </div>
+            </div>
+
+            <!-- Workflow Graph -->
+            <div class="card workflow-card">
+                <h2>🔄 Workflow Pipeline</h2>
+                <div class="workflow-graph" id="workflow-graph">
+                    <div class="wf-node" id="node-ceo" data-agent="ceo">
+                        <div class="node-icon">👔</div>
+                        <div class="node-label">CEO</div>
+                        <div class="node-status">Pending</div>
+                    </div>
+                    <div class="wf-connector">→</div>
+                    <div class="wf-node" id="node-hitl" data-agent="hitl">
+                        <div class="node-icon">✋</div>
+                        <div class="node-label">HITL</div>
+                        <div class="node-status">Pending</div>
+                    </div>
+                    <div class="wf-connector">→</div>
+                    <div class="wf-node" id="node-pm" data-agent="pm">
+                        <div class="node-icon">📋</div>
+                        <div class="node-label">PM</div>
+                        <div class="node-status">Pending</div>
+                    </div>
+                    <div class="wf-connector">→</div>
+                    <div class="wf-node" id="node-research" data-agent="researcher">
+                        <div class="node-icon">🔬</div>
+                        <div class="node-label">Research</div>
+                        <div class="node-status">Pending</div>
+                    </div>
+                    <div class="wf-connector">→</div>
+                    <div class="wf-node" id="node-swe" data-agent="swe">
+                        <div class="node-icon">💻</div>
+                        <div class="node-label">SWE</div>
+                        <div class="node-status">Pending</div>
+                    </div>
+                    <div class="wf-connector">→</div>
+                    <div class="wf-node" id="node-qa" data-agent="qa">
+                        <div class="node-icon">🧪</div>
+                        <div class="node-label">QA</div>
+                        <div class="node-status">Pending</div>
+                    </div>
+                    <div class="wf-connector">→</div>
+                    <div class="wf-node" id="node-tech_writer" data-agent="tech_writer">
+                        <div class="node-icon">📝</div>
+                        <div class="node-label">Docs</div>
+                        <div class="node-status">Pending</div>
+                    </div>
+                </div>
+                <div class="reflection-badge" id="reflection-badge" style="display:none;">
+                    🔁 Reflection cycle: <span id="reflection-count">0</span>/3
+                </div>
+            </div>
+
+            <!-- Sprint Kanban -->
+            <div class="card kanban-card">
+                <h2>📊 Sprint Board</h2>
+                <div class="kanban-board" id="kanban-board">
+                    <div class="kanban-column">
+                        <h3>Backlog</h3>
+                        <div class="kanban-items" id="kanban-backlog"></div>
+                    </div>
+                    <div class="kanban-column">
+                        <h3>In Progress</h3>
+                        <div class="kanban-items" id="kanban-progress"></div>
+                    </div>
+                    <div class="kanban-column">
+                        <h3>Done</h3>
+                        <div class="kanban-items" id="kanban-done"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel: Agent Stream + Workspace -->
+        <section class="panel panel-right">
+            <!-- Agent Communication Stream -->
+            <div class="card stream-card">
+                <h2>💬 Agent Stream</h2>
+                <div class="stream-log" id="stream-log">
+                    <div class="stream-placeholder">
+                        Launch an initiative to see agent collaboration in real-time...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workspace Explorer -->
+            <div class="card workspace-card">
+                <h2>📁 Workspace</h2>
+                <div class="workspace-files" id="workspace-files">
+                    <div class="stream-placeholder">No files yet.</div>
+                </div>
+                <div class="file-preview" id="file-preview" style="display:none;">
+                    <div class="preview-header">
+                        <span id="preview-filename"></span>
+                        <button class="btn btn-ghost btn-sm" onclick="closePreview()">✕</button>
+                    </div>
+                    <pre><code id="preview-content"></code></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
